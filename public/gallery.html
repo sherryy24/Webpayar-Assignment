@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #333; /* Dark background */
+            color: #fff; /* Light text */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 40px auto;
+            background-color: #222; /* Slightly lighter than body background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .gallery-header h1 {
+            color: #4CAF50; /* Subtle green for a touch of color */
+            font-weight: bold;
+        }
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-gap: 15px;
+        }
+        .image-gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out;
+        }
+        .image-gallery img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="gallery-header">
+            <h1>Your Uploaded Images</h1>
+        </div>
+        <div id="imageGallery" class="image-gallery">
+            <!-- Images will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        fetch('/gallery')
+            .then(response => response.json())
+            .then(images => {
+                const gallery = document.getElementById('imageGallery');
+                images.forEach(image => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = image.url;
+                    imgElement.classList.add('img-thumbnail', 'm-2');
+                    imgElement.style.border = 'none'; // Remove white border
+                    gallery.appendChild(imgElement);
+                });
+            })
+            .catch(error => console.error('Error fetching images:', error));
+    </script>
+</body>
+</html>
